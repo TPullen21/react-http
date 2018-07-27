@@ -1,53 +1,12 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
+import Posts from './Posts/Posts';
 
-import Post from '../../components/Post/Post';
-import FullPost from '../../components/FullPost/FullPost';
-import NewPost from '../../components/NewPost/NewPost';
 import './Blog.css';
 
 class Blog extends Component {
 
-    state = {
-        posts: [],
-        selectedPostId: null,
-        error: false
-    }
-
-    componentDidMount () {
-        axios.get('/posts')
-            .then(response => {
-                const posts = response.data.slice(0,10);
-                const updatedPosts = posts.map(post => {
-                    return {
-                        ...post,
-                        author: 'TJ Blake'
-                    }
-                })
-                this.setState({posts: updatedPosts});
-            })
-            .catch(err => {
-                console.log('ruh roh');
-                this.setState({error: true});
-            });
-    }
-
-    postSelectedHandler = (id) => {
-        this.setState({selectedPostId: id});
-    }
-
     render () {
-        let posts = <p>Something went wrong!</p>
-
-        if (!this.state.error) {
-            posts = this.state.posts.slice(0,10).map(post => {
-                return <Post
-                    key={post.id}
-                    title={post.title}
-                    author={post.author}
-                    clicked={() => this.postSelectedHandler(post.id)} />
-            });
-        }
 
         return (
             <div className="Blog">
@@ -59,15 +18,7 @@ class Blog extends Component {
                         </ul>
                     </nav>
                 </header>
-                <section className="Posts">
-                    {posts}
-                </section>
-                <section>
-                    <FullPost id={this.state.selectedPostId} />
-                </section>
-                <section>
-                    <NewPost />
-                </section>
+                <Posts />
             </div>
         );
     }
